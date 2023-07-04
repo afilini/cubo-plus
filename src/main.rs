@@ -151,6 +151,7 @@ struct TxIn {
 
 #[derive(Debug)]
 enum OpCode {
+    False,
     Return,
     Dup,
     Equal,
@@ -173,6 +174,8 @@ impl Parse for OpCode {
                 let data = bytes[2..(len + 2)].iter().cloned().collect();
                 Ok((OpCode::Push(data), &bytes[(len + 2)..]))
             },
+
+            0 => Ok((OpCode::False, &bytes[1..])),
 
             106 => Ok((OpCode::Return, &bytes[1..])),
             118 => Ok((OpCode::Dup, &bytes[1..])),
