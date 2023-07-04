@@ -209,8 +209,8 @@ impl Parse for TxIn {
     fn parse(bytes: &[u8]) -> Result<(Self, &[u8]), Error> {
         let (previous_output, bytes) = OutPoint::parse(bytes)?;
         let (script_sig, bytes) = if previous_output.is_coinbase() {
-            let (_, bytes) = VarInt::parse(bytes)?;
-            (Script(vec![]), bytes)
+            let (len, bytes) = VarInt::parse(bytes)?;
+            (Script(vec![]), &bytes[len.0 as usize..])
         } else {
             Parse::parse(bytes)?
         };
