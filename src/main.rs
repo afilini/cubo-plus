@@ -163,8 +163,7 @@ enum OpCode {
 
 impl Parse for OpCode {
     fn parse(bytes: &[u8]) -> Result<(Self, &[u8]), Error> {
-        dbg!(bytes[0]);
-        dbg!(match bytes[0] {
+        match bytes[0] {
             v @ 1..=75 => {
                 let data = bytes[1..(v as usize + 1)].iter().cloned().collect();
                 Ok((OpCode::Push(data), &bytes[(v as usize + 1)..]))
@@ -186,7 +185,7 @@ impl Parse for OpCode {
             172 => Ok((OpCode::CheckSig, &bytes[1..])),
 
             _ => todo!()
-        })
+        }
     }
 }
 
